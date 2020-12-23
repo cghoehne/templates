@@ -1,7 +1,7 @@
 ---
-title: "Pretty Markdown Template"
-author: "Chris Hoehne, PhD"
-date: "`r format(Sys.Date(), '%A, %B %m %Y')`"
+title: "<div class='mytitle'>Pretty Markdown Template</div>"
+author: "<div class='mysubtitle'>Chris Hoehne, PhD</div>"
+date: "<div class='mysubtitle'>`r format(Sys.Date(), '%A, %B %m %Y')`</div>"
 output: 
   html_document:
     css: ./style/style.css
@@ -12,9 +12,6 @@ output:
     includes: 
       before_body: ./style/header.html
 ---
-
-&nbsp;
-&nbsp;
 
 ## Table of Contents {.toc}
 

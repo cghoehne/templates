@@ -3,8 +3,9 @@
 .main-container {
     max-width: 100% !important;
 /    width: 1280px !important;
-    margin-left: auto;
-    margin-right: auto;
+/    width: 1920px !important;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 /* Then we place our content with this style because we don't want it to be full width */
@@ -16,17 +17,24 @@
     font-size: 130%;
     line-height: 1.7;
     padding-right: 15px;
-    padding-left: 15px;
+    padding-left: 2px;
+}
+
+#header{
+  z-index: 1;
+  padding: 0;
+  width: 100%;
+  
 }
 
 .mytitle{
- /   text-align: center;
+    text-align: center;
     text-transform: uppercase;
     font-family:Georgia, Palatino, serif;
     font-size: 100%;
     font-weight: 300;
     letter-spacing: 4px;
-    margin-bottom: 10px;
+    margin-bottom: 28px;
 }
 
 .mysubtitle{
@@ -46,8 +54,9 @@
 }
 
 body{
-    max-width: 1280px !important;
-    margin: 0 auto;
+/    max-width: 1280px !important;
+    max-width: 1920px !important;
+    margin: 0;
     background-color:white;
     counter-reset: h1;
 
