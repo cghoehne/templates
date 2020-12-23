@@ -1,0 +1,89 @@
+---
+title: "Pretty Markdown Template"
+author: "Chris Hoehne, PhD"
+date: "`r format(Sys.Date(), '%A, %B %m %Y')`"
+output: 
+  html_document:
+    css: ./style/style.css
+    number_sections: TRUE
+    toc: TRUE
+    toc_float:
+      collapsed: FALSE
+    includes: 
+      before_body: ./style/header.html
+---
+
+&nbsp;
+&nbsp;
+
+## Table of Contents {.toc}
+
+[1 About](#intro)
+
+[2 Data](#data)
+
+[3 Visual](#visual)
+
+[4 References](#references)
+
+[5 Session](#session)
+
+
+# <a name="about"></a>About
+
+Tell us about what you are doing here.
+
+```{r setup, include = F, warning = F, message = F}
+
+# custom functions & schemes
+if(!require("here")){install.packages("here")}
+source(here::here("scripts/utils.R")) # custom utility functions
+
+# load pacakges, installing any if needed
+packages <- c("ggplot2", "sf", "scales", "units", "data.table", "here") # my most common pkgs
+ipak(packages) # loads all packages, installing if needed
+
+```
+
+# <a name="data"></a>Data
+
+A section overviewing the data, perhaps?
+
+```{r data, warning = F, message = F, echo = F}
+
+head(cars)
+
+```
+
+---
+
+# <a name="visual"></a>Visual
+
+Time to shine!
+
+```{r Fig-1, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = '<b>Fig 1.</b> here\'s a caption' }
+
+library(ggplot2)
+library(scales)
+
+# sample plot with cars
+# source: https://rpubs.com/DavidEllison/290790
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color= drv)) + 
+     geom_smooth(mapping = aes(linetype = drv), method = 'loess') +
+     geom_point() +
+  theme_bw()
+
+
+```
+
+# <a name="references"></a>References
+
+1. https://github.com/cghoehne
+
+#  <a name="session"></a>Session
+
+```{r session}
+
+sessionInfo()
+
+```
