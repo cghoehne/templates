@@ -11,9 +11,9 @@ ipak <- function(pkg){
   sapply(pkg, require, character.only = TRUE)
 }
 
-# custom color theme
 if(!require("here")){install.packages("here")}
 
+# custom color theme
 if(file.exists(here::here("data/nrel-colors.csv"))){
   
   nrel.cols <- as.list(read.csv(here::here("data/nrel-colors.csv"))$hex)
@@ -21,8 +21,8 @@ if(file.exists(here::here("data/nrel-colors.csv"))){
   
 } else {
   
-  nrel.cols <- list("#0084c9", "#00a5db", "#666d70", "#d1cec6", "#191919", "#568e14", "#7fba00", "#ffc61e", "#d88c02", "#ffffff", "#c6414c")
-  names(nrel.cols) <- c("blue", "lightblue", "gray", "lightgray", "black", "green", "lightgreen", "yellow", "orange", "white", "red")
+  nrel.cols <-     list("#0084c9", "#00a5db"  , "#666d70", "#d1cec6"  , "#191919", "#568e14", "#7fba00"   , "#ffc61e", "#d88c02", "#ffffff", "#c6414c")
+  names(nrel.cols) <- c("blue"   , "lightblue", "gray"   , "lightgray", "black"  , "green"  , "lightgreen", "yellow" , "orange" , "white"  , "red"    )
 }
 
 # custom spectral color ramp
@@ -81,12 +81,33 @@ lmp <- function (modelobject) {
   return(p)
 }
 
-# CRS
+# common CRS
 ll.proj.espg <- 4326
 albers.proj.espg <- 5070 # equal area albers for continuous us
 
+# file list of everything in the repo
+# prefer data.table (if installed)
+if(require("data.table")){
+  
+  all.files.here <- data.table::as.data.table(cbind(data.table::data.table(filename = list.files(here::here(), recursive = T)), 
+                                        file.info(list.files(here::here(), recursive = T))))
+} else {
+  
+  all.files.here <- data.frame(cbind(data.frame(filename = list.files(here::here(), recursive = T)), 
+                                                    file.info(list.files(here::here(), recursive = T))))
+}
+
 # TODO process to check repo files and add large (>100mb) files to .gitignore
-#all.files <- as.data.table(cbind(data.table(filename = list.files(here(), recursive = T)), file.info(list.files(here(), recursive = T))))
 #all.files[size / 1e6 > 100] # 1e6 bytes per mb, 200 mb filesize limit for git
 #all.files[size / 1e6 > 200] # 1e6 bytes per mb, 200 mb filesize limit for git
 
+# get x y limits from ggplot obj after creation for easy annotating after 
+# source: https://stackoverflow.com/a/40304848
+get_plot_limits <- function(plot) {
+  gb = ggplot_build(plot)
+  xmin = gb$layout$panel_params[[1]]$x.range[1]
+  xmax = gb$layout$panel_params[[1]]$x.range[2]
+  ymin = gb$layout$panel_params[[1]]$y.range[1]
+  ymax = gb$layout$panel_params[[1]]$y.range[2]
+  list(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax)
+}

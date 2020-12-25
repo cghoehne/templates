@@ -1,7 +1,8 @@
 /* This change the style of the main container that wraps the whole */
 /* R Markdown document. It allows the parallax image to be full width */
 .main-container {
-    max-width: 100% !important;
+/    max-width: 100% !important;
+    min-height: 100%;
 /    width: 1280px !important;
 /    width: 1920px !important;
     margin-left: 0px;
@@ -21,10 +22,9 @@
 }
 
 #header{
-  z-index: 1;
+  margin: 0;
   padding: 0;
   width: 100%;
-  
 }
 
 .mytitle{
@@ -39,18 +39,45 @@
 
 .mysubtitle{
     text-align: center;
-    color:grey;
+    color: #111111;
     font-family:Georgia, Palatino, serif;
 }
 
 .toc{
     font-weight: 400;
-    padding-top: 65px !important;
+    padding-top: 15px !important;
     margin-top: 12pt !important;
     margin-bottom: 10px;
 /    font-size:300%;
     padding: 0px;
     font-variant:small-caps;
+}
+
+/* updating the text params in the TOC */
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: #0084c9; /* nrel blue */
+/    background-color: #568e14; /* nrel green */
+    border-color: #0084c9; /* nrel blue */
+/    border-color: #568e14; /* nrel green */
+}
+
+.tocify{
+  margin-left: 0px
+  max-width: 350px !important;
+  font-family:Georgia, Palatino, serif;
+  font-size: 65%;
+}
+
+.myfootnote{
+    text-align: center;
+    font-family:Georgia, Palatino, serif;
+    font-size: 70%;
+/    font-weight: 300;
+    color: #d1cec6; /* nrel lightgray*/
+/    color: #666d70; /* nrel gray*/
+/    color: #7fba00; /* nrel lightgreen*/
+/    letter-spacing: 4px;
+/    margin-bottom: 28px;
 }
 
 body{
@@ -76,6 +103,7 @@ body{
 	or add one to a specific element style below         */		
 /    color: #333333; /* dark gray not black */
     color: #000000; /* black */
+/    color: #d1cec6; /* nrel lightgrey */
 /    color: #666666; /* medium gray  black */	
 /    color: #E3E3E3; /* very light gray */
 /    color: white; 
@@ -93,9 +121,15 @@ p   {
 /    max-width: 540px;
     max-width: 960px;
     font-weight: 400;
-     color: #333333
+     color: #d1cec6
      margin-bottom: 25px;
     padding: 0;
+}
+
+
+.figcap{
+  text-align: left;
+  font-size: 90%;
 }
 
 /* HEADINGS */
@@ -175,7 +209,7 @@ h4:before {
 }
 
 a {
-    color: #69b3a2;
+    color: #0084c9; /* nrel blue */
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -183,11 +217,11 @@ a {
 
 a:hover {
     text-decoration: blink;
-    color: green;
+    color: #00a5db; /* nrel lightblue */
 }
 
 a:visited {
-    color: black;
+    color: #0084c9; /* nrel blue */
 }
 
 ul, ol {
@@ -198,7 +232,6 @@ ul, ol {
 ul {
     list-style-type: square;
     list-style-position: inside;
-
 }
 
 li {
@@ -210,7 +243,7 @@ li ul, li ul {
 }
 
 pre {
-    border: 0px solid #cccccc;
+    border: 0px solid #d1cec6;
     border-radius: 0px;
     padding: 0px 24px;
     max-width: 800px;

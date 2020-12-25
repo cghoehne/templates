@@ -1,7 +1,7 @@
 ---
 title: "<div class='mytitle'>Pretty Markdown Template</div>"
 author: "<div class='mysubtitle'>Chris Hoehne, PhD</div>"
-date: "<div class='mysubtitle'>`r format(Sys.Date(), '%A, %B %m %Y')`</div>"
+date: "<div class='mysubtitle'>`r format(Sys.Date(), '%A, %B %d %Y')`</div>"
 output: 
   html_document:
     css: ./style/style.css
@@ -11,6 +11,9 @@ output:
       collapsed: FALSE
     includes: 
       before_body: ./style/header.html
+      after_body: ./style/footer.html
+---
+
 ---
 
 ## Table of Contents {.toc}
@@ -25,6 +28,9 @@ output:
 
 [5 Session](#session)
 
+&nbsp;
+
+---
 
 # <a name="about"></a>About
 
@@ -33,54 +39,86 @@ Tell us about what you are doing here.
 ```{r setup, include = F, warning = F, message = F}
 
 # custom functions & schemes
-if(!require("here")){install.packages("here")}
-source(here::here("scripts/utils.R")) # custom utility functions
+if(!require("here")){install.packages("here")} # first get here, easy file paths
+if(file.exists(here::here("scripts/utils.R"))){ # if our utility script exists
+  source(here::here("scripts/utils.R"))  # import
+  } else { # but if it doesn't
+    if(!require("devtools")){install.packages("devtools")} # source it from github with devtools
+    devtools::source_url("https://github.com/cghoehne/templates/raw/main/scripts/utils.R")
+    }
 
-# load pacakges, installing any if needed
-packages <- c("ggplot2", "sf", "scales", "units", "data.table", "here") # my most common pkgs
+# load packages, installing any if needed, using the ipak utility function
+packages <- c("DT", "ggplot2", "data.table", "here")
 ipak(packages) # loads all packages, installing if needed
 
 ```
 
+
+
 # <a name="data"></a>Data
 
-A section overviewing the data, perhaps?
+A section overviewing the data, perhaps? Here we just are viewing the first 1,000 rows of `ggplot2::diamonds` with package `DT`.
 
-```{r data, warning = F, message = F, echo = F}
+&nbsp;
 
-head(cars)
+```{r datatable, warning = F, message = F, echo = F}
+
+# just print the first 1k rows
+datatable(head(diamonds, 1e3))
 
 ```
 
----
+
 
 # <a name="visual"></a>Visual
 
-Time to shine!
+Time to shine! Here are some sample figures.
 
-```{r Fig-1, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = '<b>Fig 1.</b> here\'s a caption' }
+&nbsp;
 
-library(ggplot2)
-library(scales)
+```{r Fig-1, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> A fancy hex plot.</div>" }
 
-# sample plot with cars
-# source: https://rpubs.com/DavidEllison/290790
-ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color= drv)) + 
-     geom_smooth(mapping = aes(linetype = drv), method = 'loess') +
-     geom_point() +
-  theme_bw()
+# sample plot with diamonds (my fancy hex plots)
+source(here("scripts/hex-plot.R"))
 
+hex.plot
+
+```
+
+&nbsp;
+
+```{r Fig-2, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> Another fancy hex plot. This one has a log10 x & y scales with R^2 and p-value for a simple linear model.</div>" }
+
+hex.log.lm.plot
 
 ```
 
 # <a name="references"></a>References
 
-1. https://github.com/cghoehne
+&nbsp;
+
+1. Hoehne, Christopher. (2020). https://github.com/cghoehne.
+
+2. Holtz, Yan. (2018). "Pimp my RMD: a few tips for R Markdown." https://holtzy.github.io/Pimp-my-rmd/.
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+<div class='myfootnote'>NOTE: you should cite your packages and R here, I just haven't yet (but see below for session details).</div>
 
 #  <a name="session"></a>Session
+
+&nbsp;
 
 ```{r session}
 
 sessionInfo()
 
 ```
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
