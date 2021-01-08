@@ -48,8 +48,22 @@ if(file.exists(here::here("scripts/utils.R"))){ # if our utility script exists
     }
 
 # load packages, installing any if needed, using the ipak utility function
-packages <- c("DT", "ggplot2", "data.table", "here")
+packages <- c("showtext", "DT", "ggplot2", "data.table", "here")
 ipak(packages) # loads all packages, installing if needed
+
+# fonts
+# font_paths()
+#font_files()
+# https://fonts.google.com/featured/Superfamilies
+#font_add_google("Montserrat", "Montserrat")
+
+# syntax: font_add(family = "<family_name>", regular = "/path/to/font/file")
+font_add("Palatino", "pala.ttf")
+#font_families()
+my.font <- "Palatino"
+
+# automatically use showtext for new devices
+showtext_auto() 
 
 ```
 
@@ -63,8 +77,12 @@ A section overviewing the data, perhaps? Here we just are viewing the first 1,00
 
 ```{r datatable, warning = F, message = F, echo = F}
 
-# just print the first 1k rows
-datatable(head(diamonds, 1e3))
+datatable(head(diamonds, 1e3), # just print the first 1k rows
+          extensions = 'FixedColumns', filter = 'top',
+          options = list(
+            dom = 'tfp', # order matters; t = table, f = filter, p = pagination
+            scrollX = TRUE,
+            scrollCollapse = TRUE) )
 
 ```
 
@@ -81,15 +99,55 @@ Time to shine! Here are some sample figures.
 # sample plot with diamonds (my fancy hex plots)
 source(here("scripts/hex-plot.R"))
 
-hex.plot
+# factor to scale for markdown output
+fs <- 3
+
+hex.plot +
+  theme(title = element_text(color = "black", family = my.font),
+        plot.title = element_text(size = 10*fs, color = "black", family = my.font),
+        text = element_text(color = "black", family = my.font),
+        legend.title = element_text(size = 9*fs, color = "black", family = my.font),
+        legend.text = element_text(size = 9*fs, color = "black", family = my.font),
+        axis.text = element_text(color = "black", family = my.font),
+        axis.title.x = element_text(margin = margin(t = 2, r = 0, b = 1, l = 0), 
+                                    color = "black", family = my.font, size = 10*fs),
+        axis.title.y = element_text(margin = margin(t = 0, r = 2, b = 0, l = 1), 
+                                    color = "black", family = my.font, size = 10*fs),
+        axis.text.x = element_text(margin = margin(t = 1, r = 0, b = 1, l = 0, "mm"),
+                                   color = "black", family = my.font, size = 9*fs),
+        axis.text.y = element_text(margin = margin(t = 0, r = 1, b = 0, l = 1, "mm"),
+                                   color = "black",family = my.font, size = 9*fs),
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+        axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "black"))
 
 ```
 
 &nbsp;
 
-```{r Fig-2, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> Another fancy hex plot. This one has a log10 x & y scales with R^2 and p-value for a simple linear model.</div>" }
+```{r Fig-2, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> Another fancy hex plot. This one has a log<sub>10</sub> x & y scales with R<sup>2</sup> and p-value for a simple linear model.</div>" }
 
-hex.log.lm.plot
+hex.log.plot +
+  theme(title = element_text(color = "black", family = my.font),
+        plot.title = element_text(size = 10*fs, color = "black", family = my.font),
+        text = element_text(color = "black", family = my.font),
+        legend.title = element_text(size = 9*fs, color = "black", family = my.font),
+        legend.text = element_text(size = 9*fs, color = "black", family = my.font),
+        axis.text = element_text(color = "black", family = my.font),
+        axis.title.x = element_text(margin = margin(t = 2, r = 0, b = 1, l = 0), 
+                                    color = "black", family = my.font, size = 10*fs),
+        axis.title.y = element_text(margin = margin(t = 0, r = 2, b = 0, l = 1), 
+                                    color = "black", family = my.font, size = 10*fs),
+        axis.text.x = element_text(margin = margin(t = 3.5, r = 0, b = 1, l = 0, "mm"),
+                                   color = "black", family = my.font, size = 9*fs),
+        axis.text.y = element_text(margin = margin(t = 0, r = 3.5, b = 0, l = 1, "mm"),
+                                   color = "black",family = my.font, size = 9*fs),
+        axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+        axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "black")) +
+  
+  # see scripts/hex-plot for the raw
+  # TODO integrate the scaling factor for text in hex-plot.R, could even do different sizings/headings
+  annotate("text", y = a.yr, x = a.xr, label = bquote(R^2 == .(r2.dt)), size = 3*fs, family = my.font) +
+  annotate("text", y = a.yp, x = a.xp, label = bquote(italic(.(pval.lab.dt))), size = 3*fs, family = my.font)
 
 ```
 

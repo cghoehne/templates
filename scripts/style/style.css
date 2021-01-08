@@ -55,17 +55,19 @@
 
 /* updating the text params in the TOC */
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
-    background-color: #0084c9; /* nrel blue */
-/    background-color: #568e14; /* nrel green */
-    border-color: #0084c9; /* nrel blue */
-/    border-color: #568e14; /* nrel green */
+    background-color: #0084C9; /* cap red */
+/    background-color: #0084C9; /* cap blue */
+    border-color: #0084C9; /* cap red */
+/    border-color: #0084C9; /* cap blue */
 }
 
 .tocify{
-  margin-left: 0px
-  max-width: 350px !important;
+  margin-left: 10px;
+  max-width: 350px;
   font-family:Georgia, Palatino, serif;
-  font-size: 65%;
+  font-size: 70%;
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
 }
 
 .myfootnote{
@@ -78,6 +80,22 @@
 /    color: #7fba00; /* nrel lightgreen*/
 /    letter-spacing: 4px;
 /    margin-bottom: 28px;
+}
+
+.dataTables_wrapper{
+    font-family:Georgia, Palatino, serif;
+    font-size: 13px;
+/    direction: rtl;
+    position: relative;
+    clear: both;
+    *zoom: 1;
+    zoom: 1;
+}
+
+.r{
+  font-size:65%;
+  margin-top: 10pt;
+  margin-bottom: 10pt;
 }
 
 body{
@@ -129,7 +147,9 @@ p   {
 
 .figcap{
   text-align: left;
-  font-size: 90%;
+  font-size: 90%;  
+  margin-top: 9pt;
+  margin-bottom: 12pt;
 }
 
 /* HEADINGS */
@@ -142,9 +162,9 @@ h1{
 /  font-size:300%;
   font-weight: 400;
   padding: 0px;
-  padding-top: 65px !important;
-  margin-top: 12pt !important;
-  margin-bottom: 10px;
+  padding-top: 20px !important;
+  margin-top: 24pt;
+  margin-bottom: 12px;
 /  counter-increment: h2;
 }
 
@@ -152,27 +172,30 @@ h2{
   color: #111111;
   font-weight: 400;
   font-size:150%;
-/  margin: 24px 0 6px
-  margin-bottom: 25px;
+/  margin: 24px 0 6px;
+  margin-top: 20pt;
+  margin-bottom: 12pt;
   padding: 0;
 /  counter-increment: h3;
 }
 
 h3{
   font-weight: 400;
-  font-size:120%
+  font-size:120%;
 /  color: #111111;
-  margin-bottom: 25px;
+  margin-top: 16pt;
+  margin-bottom: 12pt;
   padding: 0;
 /  counter-increment: h4;
 }
 
 h4{
   font-variant:small-caps;
-  font-size:100%
+  font-size:100%;
   font-weight: 400;
 /  color: #111111;
-  margin-bottom: 25px;
+  margin-top: 12pt;
+  margin-bottom: 12pt;
   padding: 0;
 /  counter-increment: h5;
 }
@@ -180,12 +203,16 @@ h4{
 h5 {
     font-size:80%
     font-weight: 100;
+    margin-top: 12pt !important;
+    margin-bottom: 12pt;
  /   counter-increment: h6;
 }
 
 h6 {
-    font-size:80%
+    font-size:80%;
     font-weight: 100;
+    margin-top: 12pt !important;
+    margin-bottom: 12pt;
 }
 
 h1:before {
@@ -209,7 +236,7 @@ h4:before {
 }
 
 a {
-    color: #0084c9; /* nrel blue */
+    color: #0084C9; /* cap red */
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -217,11 +244,11 @@ a {
 
 a:hover {
     text-decoration: blink;
-    color: #00a5db; /* nrel lightblue */
+    color: ##0084C9; /* cap blue */
 }
 
 a:visited {
-    color: #0084c9; /* nrel blue */
+    color: #0084C9; /* cap red */
 }
 
 ul, ol {
@@ -265,8 +292,10 @@ aside {
 blockquote {
     border-left:.5em solid #eee;
     padding: 0 1em;
-    margin-left:0;
-    max-width: 476px;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 900px;
+/    width: 100%;
 }
 
 blockquote  cite {
@@ -290,4 +319,3 @@ hr {
     margin: 0 auto 0 0;
     color: #999;
 }
-

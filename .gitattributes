@@ -1,0 +1,3 @@
+# ignore checkpoint folder for languague detection
+
+.checkpoint/* linguist-vendored

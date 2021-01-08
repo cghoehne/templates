@@ -112,7 +112,7 @@ hex.log.plot <- ggplot(data = dt, aes(y = price, x = carat)) +
   coord_cartesian(clip = "off", xlim = c(NA, NA),) +
   
   # other optional theme / formatting
-  labs(title = "Diamonds Price vs Carat (log x & y)") +
+  labs(title = "Diamonds Price vs Carat") +
   theme_minimal() +
   theme(title = element_text(color = "black"),
         plot.title = element_text(size = 12),
