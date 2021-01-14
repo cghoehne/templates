@@ -14,6 +14,8 @@ output:
       after_body: ./style/footer.html
 ---
 
+<!------(header here)------->
+
 ---
 
 ## Table of Contents {.toc}
@@ -32,24 +34,27 @@ output:
 
 ---
 
+<!----------(\)----------->
+
 # <a name="about"></a>About
 
 Tell us about what you are doing here.
 
 ```{r setup, include = F, warning = F, message = F}
 
-# custom functions & schemes
-if(!require("here")){install.packages("here")} # first get here, easy file paths
-if(file.exists(here::here("scripts/utils.R"))){ # if our utility script exists
-  source(here::here("scripts/utils.R"))  # import
-  } else { # but if it doesn't
-    if(!require("devtools")){install.packages("devtools")} # source it from github with devtools
-    devtools::source_url("https://github.com/cghoehne/templates/raw/main/scripts/utils.R")
-    }
+set.seed(42)
+
+# source utilities script
+my.util.path <- here::here("scripts/utils.R")
+if(!require("here")){install.packages("here")}
+if(!file.exists(my.util.path)){
+  download.file("https://github.com/cghoehne/templates/raw/main/scripts/utils.R", 
+                destfile = my.util.path) }
+source(my.util.path)
 
 # load packages, installing any if needed, using the ipak utility function
 packages <- c("showtext", "DT", "ggplot2", "data.table", "here")
-ipak(packages) # loads all packages, installing if needed
+ipak(packages) # loads all packages, installing if needed. from above utils
 
 # fonts
 # font_paths()
@@ -65,15 +70,21 @@ my.font <- "Palatino"
 # automatically use showtext for new devices
 showtext_auto() 
 
+# indices for table/figure counting
+table.n <- 1L
+fig.n <- 1L # FIXME not using
+
 ```
 
-
+<!-------------->
 
 # <a name="data"></a>Data
 
 A section overviewing the data, perhaps? Here we just are viewing the first 1,000 rows of `ggplot2::diamonds` with package `DT`.
 
 &nbsp;
+
+<div class='figcap'><b>Table `r paste0(table.n)`. </b>Diamond data.</div>
 
 ```{r datatable, warning = F, message = F, echo = F}
 
@@ -84,9 +95,11 @@ datatable(head(diamonds, 1e3), # just print the first 1k rows
             scrollX = TRUE,
             scrollCollapse = TRUE) )
 
+table.n <- table.n + 1L
+
 ```
 
-
+<!-------------->
 
 # <a name="visual"></a>Visual
 
@@ -94,13 +107,13 @@ Time to shine! Here are some sample figures.
 
 &nbsp;
 
-```{r Fig-1, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> A fancy hex plot.</div>" }
+```{r hex-plot, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = paste0("<div class='figcap'><b>Fig ", fig.n, ".</b> A fancy hex plot.</div>") }
 
 # sample plot with diamonds (my fancy hex plots)
 source(here("scripts/hex-plot.R"))
 
 # factor to scale for markdown output
-fs <- 3
+fs <- 3 # FIXME why does text display resolution mismatch between .Rmd and .html
 
 hex.plot +
   theme(title = element_text(color = "black", family = my.font),
@@ -122,9 +135,13 @@ hex.plot +
 
 ```
 
+```{r, echo = F, message = F, warning = F}
+fig.n <- fig.n + 1
+```
+
 &nbsp;
 
-```{r Fig-2, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = "<div class='figcap'><b>Fig 1.</b> Another fancy hex plot. This one has a log<sub>10</sub> x & y scales with R<sup>2</sup> and p-value for a simple linear model.</div>" }
+```{r log-hex-plot, eval = T, echo = F, warning = F, message = F, fig.dim = c(8, 4.5), fig.align = 'center', fig.cap = paste0("<div class='figcap'><b>Fig ", fig.n, ".</b> Another fancy hex plot. This one has a log<sub>10</sub> x & y scales with R<sup>2</sup> and p-value for a simple linear model.</div>") }
 
 hex.log.plot +
   theme(title = element_text(color = "black", family = my.font),
@@ -151,6 +168,12 @@ hex.log.plot +
 
 ```
 
+```{r, echo = F, message = F, warning = F}
+
+fig.n <- fig.n + 1
+
+```
+
 # <a name="references"></a>References
 
 &nbsp;
@@ -159,20 +182,66 @@ hex.log.plot +
 
 2. Holtz, Yan. (2018). "Pimp my RMD: a few tips for R Markdown." https://holtzy.github.io/Pimp-my-rmd/.
 
+<!-------------->
+
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
 
-<div class='myfootnote'>NOTE: you should cite your packages and R here, I just haven't yet (but see below for session details).</div>
+<div class='myfootnote'>**foot*****NOTE***: if you are using this more formarlly, you should probably cite your packages, R (i.e. `utils::citation()`), etc. Instead, I just include the session and package details below).</div>
 
-#  <a name="session"></a>Session
+<!-------------->
+
+# <a name="session"></a>Session & Packages
 
 &nbsp;
+&nbsp;
 
-```{r session}
+<div class='figcap'><b>Table `r paste0(table.n)`. </b>R environment session info for reproducibility of results.</div>
 
-sessionInfo()
+```{r session-table, echo = F, message = F, warning = F, fig.align = "center", out.width = '100%', results = 'asis'}
+
+invisible(ipak("devtools"))
+
+session.platform <- data.frame(cbind(names(unlist(devtools::session_info()$platform)), 
+                                     unlist(devtools::session_info()$platform)), row.names = NULL)
+
+colnames(session.platform) <- c("Setting", "Value")
+
+knitr::kable(
+  session.platform, 
+  booktabs = T, 
+  align = "l",
+  caption.short = " "
+  )
+
+table.n <- table.n + 1L
+
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+
+<div class='figcap'><b>Table `r paste0(table.n)`. </b>Package info for reproducibility of results.</div>
+
+```{r package-table, echo = F, message = F, warning = F, fig.align = "center", out.width = '100%', results = 'asis'}
+
+session.packages <- as.data.frame(devtools::session_info()$packages)
+attached.packages <- session.packages[session.packages$attached == T, 
+                                      c("package", "loadedversion", "date")]
+
+colnames(attached.packages) <- c("Package", "Loaded version", "Date")
+rownames(attached.packages) <- NULL
+
+knitr::kable(
+  attached.packages, 
+  booktabs = T, 
+  align = "l",
+  caption.short = " ")
+
+table.n <- table.n + 1L
 
 ```
 
@@ -180,3 +249,5 @@ sessionInfo()
 &nbsp;
 &nbsp;
 &nbsp;
+
+<!------(footer here)------->
