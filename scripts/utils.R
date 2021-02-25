@@ -52,6 +52,9 @@ pretty.cut.pct <- function(x){
 # pretty round the limit for fixed coordinates based on max of pred and actual volume
 pretty.round <- function(x, ratio, sigs){signif(max(x, na.rm = T) * ratio, sigs)}
 
+# pretty significant figures (e.g., 21. )
+signif.pretty <- function(x, digits = 1){formatC(signif(x, digits = 1), digits = 1, format = "fg", flag = "#")}
+
 # use a function to make sure if all obs for date x ID are NA, returns NA
 sum.na <- function(x){if (all(is.na(x))) x[NA_integer_] else sum(x, na.rm = T)}
 mean.na <- function(x){if (all(is.na(x))) x[NA_integer_] else mean(x, na.rm = T)}
@@ -90,11 +93,11 @@ albers.proj.espg <- 5070 # equal area albers for continuous us
 if(require("data.table")){
   
   all.files.here <- data.table::as.data.table(cbind(data.table::data.table(filename = list.files(here::here(), recursive = T)), 
-                                        file.info(list.files(here::here(), recursive = T))))
+                                                    file.info(list.files(here::here(), recursive = T))))
 } else {
   
   all.files.here <- data.frame(cbind(data.frame(filename = list.files(here::here(), recursive = T)), 
-                                                    file.info(list.files(here::here(), recursive = T))))
+                                     file.info(list.files(here::here(), recursive = T))))
 }
 
 # TODO process to check repo files and add large (>100mb) files to .gitignore
@@ -103,7 +106,7 @@ if(require("data.table")){
 
 # get x y limits from ggplot obj after creation for easy annotating after 
 # source: https://stackoverflow.com/a/40304848
-get_plot_limits <- function(plot) {
+get_plot_limits <- function(plot) { # FIXME
   gb = ggplot_build(plot)
   xmin = gb$layout$panel_params[[1]]$x.range[1]
   xmax = gb$layout$panel_params[[1]]$x.range[2]
