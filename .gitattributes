@@ -1,3 +1,2 @@
-# ignore checkpoint folder for languague detection
-
-.checkpoint/* linguist-vendored
+# ignore .html files
+*html linguist-vendored
