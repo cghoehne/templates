@@ -52,8 +52,18 @@ pretty.cut.pct <- function(x){
 # pretty round the limit for fixed coordinates based on max of pred and actual volume
 pretty.round <- function(x, ratio, sigs){signif(max(x, na.rm = T) * ratio, sigs)}
 
-# pretty significant figures (e.g., 21. )
-signif.pretty <- function(x, digits = 1){formatC(signif(x, digits = 1), digits = 1, format = "fg", flag = "#")}
+# pretty significant figures with proper formatting after rounding. e.g. 99.99 to 3 sigfig = "100." not "100"
+signif.pretty <- function(x, dig = 2, add.comma = T){
+  x.c <- formatC(signif(x, digits = dig), digits = dig, format = "fg", flag = "#", big.mark = ifelse(add.comma, ",", ""))
+  x.r <- formatC(signif(x, digits = dig), digits = dig, format = "fg", flag = "#")
+  if(add.comma){
+    ifelse(grepl("\\.$", x.r) &  (nchar(as.integer(x.r)) == dig), paste0(x.c, "."), x.c)
+  } else {
+    ifelse(grepl("\\.$", x.r) & !(nchar(as.integer(x.r)) == dig), gsub("\\.", "", x.r), x.r)
+  }
+}
+#signif.pretty(9.999^(-3:4), dig = 3) # with comma by default
+#signif.pretty(9.999^(-3:4), dig = 3, add.comma = F) # no comma
 
 # use a function to make sure if all obs for date x ID are NA, returns NA
 sum.na <- function(x){if (all(is.na(x))) x[NA_integer_] else sum(x, na.rm = T)}
@@ -90,15 +100,15 @@ albers.proj.espg <- 5070 # equal area albers for continuous us
 
 # file list of everything in the repo
 # prefer data.table (if installed)
-if(require("data.table")){
-  
-  all.files.here <- data.table::as.data.table(cbind(data.table::data.table(filename = list.files(here::here(), recursive = T)), 
-                                                    file.info(list.files(here::here(), recursive = T))))
-} else {
-  
-  all.files.here <- data.frame(cbind(data.frame(filename = list.files(here::here(), recursive = T)), 
-                                     file.info(list.files(here::here(), recursive = T))))
-}
+#if(require("data.table")){
+#  
+#  all.files.here <- data.table::as.data.table(cbind(data.table::data.table(filename = list.files(here::here(), recursive = T)), 
+#                                                    file.info(list.files(here::here(), recursive = T))))
+#} else {
+#  
+#  all.files.here <- data.frame(cbind(data.frame(filename = list.files(here::here(), recursive = T)), 
+#                                     file.info(list.files(here::here(), recursive = T))))
+#}
 
 # TODO process to check repo files and add large (>100mb) files to .gitignore
 #all.files[size / 1e6 > 100] # 1e6 bytes per mb, 200 mb filesize limit for git
