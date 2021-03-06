@@ -53,17 +53,26 @@ pretty.cut.pct <- function(x){
 pretty.round <- function(x, ratio, sigs){signif(max(x, na.rm = T) * ratio, sigs)}
 
 # pretty significant figures with proper formatting after rounding. e.g. 99.99 to 3 sigfig = "100." not "100"
-signif.pretty <- function(x, dig = 2, add.comma = T){
+signif.pretty <- function(x, dig = 2, add.comma = T, format.percent = F){
+  # TODO option to drop hanging period in any case, or only when when rounding to dig ends in a multiple of 10.
+  if(format.percent){x <- x * 100}
   x.c <- formatC(signif(x, digits = dig), digits = dig, format = "fg", flag = "#", big.mark = ifelse(add.comma, ",", ""))
   x.r <- formatC(signif(x, digits = dig), digits = dig, format = "fg", flag = "#")
-  if(add.comma){
-    ifelse(grepl("\\.$", x.r) &  (nchar(as.integer(x.r)) == dig), paste0(x.c, "."), x.c)
-  } else {
-    ifelse(grepl("\\.$", x.r) & !(nchar(as.integer(x.r)) == dig), gsub("\\.", "", x.r), x.r)
+  if(add.comma & !format.percent){ # comma no %
+    ifelse(grepl("\\.$", x.r) &  (nchar(as.integer(x.r)) == dig), paste0(x.c, "."), x.c) 
+  } else if(add.comma & format.percent){ # comma w/ %
+    paste0(ifelse(grepl("\\.$", x.r) &  (nchar(as.integer(x.r)) == dig), paste0(x.c, "."), x.c), "%") 
+  } else if(!add.comma & format.percent) { # no comma w/ %
+    paste0(ifelse(grepl("\\.$", x.r) & !(nchar(as.integer(x.r)) == dig), gsub("\\.", "", x.r), x.r), "%") 
+  } else { # no comma or %
+    ifelse(grepl("\\.$", x.r) & !(nchar(as.integer(x.r)) == dig), gsub("\\.", "", x.r), x.r) 
   }
 }
+# examples
 #signif.pretty(9.999^(-3:4), dig = 3) # with comma by default
 #signif.pretty(9.999^(-3:4), dig = 3, add.comma = F) # no comma
+#signif.pretty(9.999^(-3:4), dig = 3, format.percent = T) # comma w/ percent
+#signif.pretty(9.999^(-3:4), dig = 3, add.comma = F, format.percent = T) # no comma w/ %
 
 # use a function to make sure if all obs for date x ID are NA, returns NA
 sum.na <- function(x){if (all(is.na(x))) x[NA_integer_] else sum(x, na.rm = T)}
